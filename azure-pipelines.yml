@@ -45,3 +45,15 @@ steps:
 #     provisioningProfileLocation: 'secureFiles'
 #     provProfileSecureFile: 'AppleProvisioningProfile.mobileprovision'
 #   displayName: 'Install Apple Provisioning Profile'
+
+# - script: |
+#     cd ios
+#     bundle install
+#     fastlane build
+#   displayName: 'Build iOS'
+
+# - script: |
+#     cd android
+#     bundle install
+#     fastlane build
+#   displayName: 'Build android'
