@@ -1,24 +1,40 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, StyleSheet, FlatList} from 'react-native';
 
-import Card from './src/components/Card';
+// import Card from './src/components/Card';
 import Card2 from './src/components/Card2';
 
 const response = [
-  {name: 'Luiz Doreto', role: 'Dev', hobby: 'Baterista'},
-  {name: 'Matheus', role: 'Dev', hobby: 'Músico'},
-  {name: 'Ariane', role: 'Dev', hobby: 'Assistir séries'},
-  {name: 'Nágella', role: 'Dev', hobby: 'Ukelelista'},
+  {id: 1, name: 'Luiz Doreto', role: 'Dev', hobby: 'Baterista'},
+  {id: 2, name: 'Matheus', role: 'Dev', hobby: 'Músico'},
+  {id: 3, name: 'Ariane', role: 'Dev', hobby: 'Assistir séries'},
+  {id: 4, name: 'Nágella', role: 'Dev', hobby: 'Ukelelista'},
 ];
 
 const App = () => {
   return (
-    <SafeAreaView>
-      {response.map(user => (
-        <Card2 name={user.name} role={user.role} hobby={user.hobby} />
-      ))}
+    <SafeAreaView style={styles.view}>
+      <FlatList
+        data={response}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => (
+          <Card2 name={item.name} role={item.role} hobby={item.hobby} />
+        )}
+      />
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+  },
+  input: {
+    height: 60,
+    width: 200,
+    borderWidth: 1,
+    padding: 10,
+  },
+});
 
 export default App;
