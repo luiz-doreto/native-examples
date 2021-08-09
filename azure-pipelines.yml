@@ -10,7 +10,7 @@ variables:
   - group: React Native Variables
 
 pool:
-  vmImage: 'MacOS 11.5.1'
+  vmImage: ubuntu-latest
 
 steps:
 - task: NodeTool@0
