@@ -1,7 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
-  StyleSheet,
   FlatList,
   View,
   Text,
@@ -9,17 +8,35 @@ import {
 } from 'react-native';
 
 import Card2 from '../../components/Card2';
-
-const response = [
-  {id: 1, name: 'Luiz Doreto', role: 'Dev', hobby: 'Baterista'},
-  {id: 2, name: 'Matheus', role: 'Dev', hobby: 'Músico'},
-  {id: 3, name: 'Ariane', role: 'Dev', hobby: 'Assistir séries'},
-  {id: 4, name: 'Nágella', role: 'Dev', hobby: 'Ukelelista'},
-];
+import api from '../../services/api';
+import styles from './styles';
 
 const Home = ({navigation}) => {
-  const handleNavigate = name => {
-    navigation.navigate('About', {name}); // { name: 'Luiz Doreto'}
+  const [repos, setRepos] = useState([]);
+
+  const loadRepos = async () => {
+    const {data} = await api.get('users/facebook/repos');
+
+    const repoNames = data.map(repo => ({
+      name: repo.full_name,
+      avatar: repo.owner.avatar_url,
+    }));
+
+    setRepos(repoNames);
+  };
+
+  useEffect(() => {
+    loadRepos();
+  }, []);
+
+  const onRemoveTask = item => {
+    const filteredTasks = repos.filter(repo => repo.name !== item);
+
+    setRepos(filteredTasks);
+  };
+
+  const handleNavigate = ({name, avatar}) => {
+    navigation.navigate('About', {name, avatar});
   };
 
   return (
@@ -28,28 +45,20 @@ const Home = ({navigation}) => {
         <Text>Meu Header</Text>
       </View>
       <FlatList
-        data={response}
+        data={repos}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
-          <TouchableOpacity onPress={() => handleNavigate(item.name)}>
-            <Card2 name={item.name} role={item.role} hobby={item.hobby} />
+          <TouchableOpacity onPress={() => handleNavigate(item)}>
+            <Card2
+              name={item.name}
+              avatar={item.avatar}
+              onRemoveTask={onRemoveTask}
+            />
           </TouchableOpacity>
         )}
       />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  view: {
-    flex: 1,
-  },
-  header: {
-    height: 70,
-    backgroundColor: 'skyblue',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default Home;

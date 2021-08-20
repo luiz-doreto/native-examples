@@ -18,7 +18,14 @@ const App = () => (
           gestureEnabled: false,
         }}
       />
-      <Stack.Screen name="About" component={About} />
+      <Stack.Screen
+        name="About"
+        component={About}
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+        }}
+      />
     </Stack.Navigator>
   </NavigationContainer>
 );
