@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import DatePicker from '../../components/DatePicker';
 import Card2 from '../../components/Card2';
 import api from '../../services/api';
 import styles from './styles';
 
 const Home = ({navigation}) => {
   const [repos, setRepos] = useState([]);
+  const [date, setDate] = useState(new Date());
 
   const loadRepos = async () => {
     const {data} = await api.get('users/facebook/repos');
@@ -44,6 +46,11 @@ const Home = ({navigation}) => {
       <View style={styles.header}>
         <Text>Meu Header</Text>
       </View>
+      <DatePicker
+        value={date}
+        onDateChange={setDate}
+        placeholder="Data de nascimento"
+      />
       <FlatList
         data={repos}
         keyExtractor={item => item.id}
