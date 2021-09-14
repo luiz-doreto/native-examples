@@ -1,12 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView, StyleSheet, Text, Button, View} from 'react-native';
 
+import InfoSheet from '../../components/InfoSheet';
 import Select from '../../components/Select';
 import api from '../../services/api';
-
-const TOKEN =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMzBjYjI3OTEwODg1MDAzN2FlODc2MyIsImlhdCI6MTYzMTI4MzkzNCwiZXhwIjoxNjMxMzcwMzM0fQ.rqEHfT36pGdk_bv9ntG4Bth5yxI3sIw2gaT8qwLbFdM';
 
 const About = ({route}) => {
   const {name, avatar} = route.params;
@@ -15,6 +14,7 @@ const About = ({route}) => {
   const [city, setCity] = useState('');
   const [cities, setCities] = useState([]);
   const navigation = useNavigation();
+  const infoRef = useRef(null);
 
   const handleBack = () => {
     navigation.goBack();
@@ -22,11 +22,7 @@ const About = ({route}) => {
 
   const fetchStates = async () => {
     try {
-      const {data} = await api.get('states-list', {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`,
-        },
-      });
+      const {data} = await api.get('states-list');
 
       setStates(data);
     } catch (error) {
@@ -36,11 +32,7 @@ const About = ({route}) => {
 
   const fetchCities = async () => {
     try {
-      const {data} = await api.get(`cities-list/${state}`, {
-        headers: {
-          Authorization: `Bearer ${TOKEN}`,
-        },
-      });
+      const {data} = await api.get(`cities-list/${state}`);
 
       setCities(data);
     } catch (error) {
@@ -78,6 +70,15 @@ const About = ({route}) => {
         onOpen={fetchCities}
         onChange={setCity}
         disabled={!state}
+      />
+      <TouchableOpacity onPress={() => infoRef.current.expand()}>
+        <Text>CLICA AQUI</Text>
+      </TouchableOpacity>
+      <InfoSheet
+        ref={infoRef}
+        title="Usuário cadastrado"
+        subtitle="Realize seu login e gerencie sua hamburgueria"
+        buttonText="Fazer login"
       />
     </SafeAreaView>
   );
