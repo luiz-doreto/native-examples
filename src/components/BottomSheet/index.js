@@ -3,6 +3,7 @@ import RNBottomSheet, {
   BottomSheetBackdrop,
   BottomSheetFlatList,
 } from '@gorhom/bottom-sheet';
+import {Portal} from 'react-native-portalize';
 
 const BottomSheet = forwardRef(
   ({snapPoints, children, onOpen, backgroundColor}, ref) => {
@@ -24,15 +25,17 @@ const BottomSheet = forwardRef(
     );
 
     return (
-      <RNBottomSheet
-        ref={ref}
-        index={-1}
-        backgroundStyle={{backgroundColor}}
-        snapPoints={snapPoints}
-        onChange={handleChange}
-        backdropComponent={renderBackdrop}>
-        {children}
-      </RNBottomSheet>
+      <Portal>
+        <RNBottomSheet
+          ref={ref}
+          index={-1}
+          backgroundStyle={{backgroundColor}}
+          snapPoints={snapPoints}
+          onChange={handleChange}
+          backdropComponent={renderBackdrop}>
+          {children}
+        </RNBottomSheet>
+      </Portal>
     );
   },
 );
